@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Room</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: grid; place-items: center;
+    background: #14101f; font-family: Georgia, serif; color: #f3e9d2;
+  }
+  .room {
+    position: relative; width: min(94vw, 900px); aspect-ratio: 16 / 10;
+    background: linear-gradient(#2a1f3d 0 68%, #4a3326 68% 100%);
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  }
+  .item {
+    position: absolute; display: grid; place-items: center;
+    font-size: clamp(32px, 7vw, 72px); cursor: pointer;
+    background: none; border: 0; transition: transform .2s;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,.5));
+  }
+  .item:hover, .item:focus-visible { transform: scale(1.2) rotate(-4deg); outline: none; }
+  .item span {
+    position: absolute; bottom: -1.4em; font-size: 13px; opacity: 0;
+    transition: opacity .2s; white-space: nowrap;
+  }
+  .item:hover span, .item:focus-visible span { opacity: 1; }
+  #modal {
+    position: fixed; inset: 0; display: none; place-items: center;
+    background: rgba(0,0,0,.7); padding: 20px;
+  }
+  #modal.open { display: grid; }
+  .card {
+    background: #f3e9d2; color: #2a1f3d; max-width: 420px; padding: 28px;
+    border-radius: 10px; text-align: center;
+  }
+  .card h2 { margin-top: 0; }
+  .card button {
+    margin-top: 12px; padding: 8px 18px; border: 0; border-radius: 6px;
+    background: #2a1f3d; color: #f3e9d2; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="room">
+  <button class="item" style="left:8%; top:18%" data-title="The Window" data-text="It is always night out there. Nobody knows why."> 🌙<span>Window</span></button>
+  <button class="item" style="left:42%; top:12%" data-title="The Clock" data-text="It runs backwards. Today it says you are early."> 🕰️<span>Clock</span></button>
+  <button class="item" style="left:78%; top:20%" data-title="The Book" data-text="Only one page is readable. It says: try the cauldron."> 📖<span>Book</span></button>
+  <button class="item" style="left:20%; top:62%" data-title="The Cauldron" data-text="Something is bubbling. It smells like secrets."> 🧪<span>Cauldron</span></button>
+  <button class="item" style="left:62%; top:64%" data-title="The Cat" data-text="The cat stares. You have been judged."> 🐈‍⬛<span>Cat</span></button>
+</div>
+
+<div id="modal"><div class="card">
+  <h2 id="mt"></h2><p id="mx"></p><button id="close">Close</button>
+</div></div>
+
+<script>
+  const modal = document.getElementById('modal');
+  document.querySelectorAll('.item').forEach(b => {
+    b.addEventListener('click', () => {
+      document.getElementById('mt').textContent = b.dataset.title;
+      document.getElementById('mx').textContent = b.dataset.text;
+      modal.classList.add('open');
+    });
+  });
+  document.getElementById('close').onclick = () => modal.classList.remove('open');
+  modal.onclick = e => { if (e.target === modal) modal.classList.remove('open'); };
+</script>
+</body>
+</html>
